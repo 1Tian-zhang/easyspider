@@ -1,0 +1,23 @@
+2016-12-20 18:10:33 INFO: Scrapy 1.0.3 started (bot: scrapybot)
+2016-12-20 18:10:33 INFO: Optional features available: ssl, http11, boto
+2016-12-20 18:10:33 INFO: Overridden settings: {'COOKIES_DEBUG': True, 'NEWSPIDER_MODULE': 'example.spiders', 'DUPEFILTER_CLASS': 'scrapy_redis.dupefilter.RFPDupeFilter', 'SPIDER_MODULES': ['example.spiders'], 'REACTOR_THREADPOOL_MAXSIZE': 16, 'USER_AGENT': 'scrapy-redis (+https://github.com/rolando/scrapy-redis)', 'SCHEDULER': 'scrapy_redis.scheduler.Scheduler', 'DOWNLOAD_DELAY': 1}
+2016-12-20 18:10:34 INFO: Enabled extensions: CloseSpider, TelnetConsole, LogStats, CoreStats, SpiderState
+2016-12-20 18:10:34 DEBUG: Retrieving credentials from metadata server.
+2016-12-20 18:10:35 ERROR: Caught exception reading instance data
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/dist-packages/boto/utils.py", line 210, in retry_url
+    r = opener.open(req, timeout=timeout)
+  File "/usr/lib/python2.7/urllib2.py", line 429, in open
+    response = self._open(req, data)
+  File "/usr/lib/python2.7/urllib2.py", line 447, in _open
+    '_open', req)
+  File "/usr/lib/python2.7/urllib2.py", line 407, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python2.7/urllib2.py", line 1228, in http_open
+    return self.do_open(httplib.HTTPConnection, req)
+  File "/usr/lib/python2.7/urllib2.py", line 1198, in do_open
+    raise URLError(err)
+URLError: <urlopen error timed out>
+2016-12-20 18:10:35 ERROR: Unable to read instance data, giving up
+2016-12-20 18:10:35 CRITICAL: Unhandled error in Deferred:
+2016-12-20 18:10:35 CRITICAL: 
