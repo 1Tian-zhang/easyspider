@@ -66,7 +66,7 @@ SCHEDULER_PERSIST = True
 
 ITEM_PIPELINES = {
     'easyspider.pipelines.pipelines.ExamplePipeline': 300,
-    'scrapy_redis.pipelines.RedisPipeline': 400,
+    #'scrapy_redis.pipelines.RedisPipeline': 400,
     "easyspider.pipelines.Baidu_search_pipelines.MysqlPipeline":500
 }
 
@@ -136,8 +136,25 @@ DOWNLOADER_MIDDLEWARES = {
 
 
     #'scrapy.downloadermiddlewares.redirect.RedirectMiddleware': 600,
+    
+
+
+
+
+    #为了记录着想，升级到960试试
     'scrapy.downloadermiddlewares.redirect.RedirectMiddleware': None,
     "easyspider.middlewares.redirect.RedirectMiddleware":600,
+    
+
+
+
+
+
+
+
+
+
+
     #该中间件的存在使得爬去需要cookies的网站成为可能。它负责追踪web_server 发送的cookies，然后在之后的requests中发送回去
     #同样的，这个中间件也要配合settings里面的设置起作用。相关的两个设置是：
     #【COOKIES_ENABLED】默认为True 如果关闭,cookies将不会被发送给 web server
@@ -184,6 +201,8 @@ DOWNLOADER_MIDDLEWARES = {
     'scrapy.downloadermiddlewares.stats.DownloaderStats': 850,
     #该中间件用来为所有的request 和response 提供底层的缓存支持。其由cache存储后端和cache策略组成
     'scrapy.downloadermiddlewares.httpcache.HttpCacheMiddleware': 900,
+    "easyspider.middlewares.step_records.Step_records_Middleware":950,
+    #"easyspider.middlewares.redirect.RedirectMiddleware":960,
 }
 
 
@@ -251,9 +270,9 @@ SPIDER_MIDDLEWARES = {
 
 
 
-DEFAULT_REQUEST_HEADERS = {
-	"hello":"i'm easyspider"
-}
+# DEFAULT_REQUEST_HEADERS = {
+# 	"hello":"i'm easyspider"
+# }
 
 #禁用cookies
 COOKIES_ENABLED = False

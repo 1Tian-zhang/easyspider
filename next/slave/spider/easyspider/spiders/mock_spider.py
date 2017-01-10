@@ -8,17 +8,19 @@ from easyspider.items.Baidu_search_items import Baidu_search_items
 
 #import easyspider.test
 
-test_crawl_url = "http://www.easygot.cn/show_headers.php"
+#test_crawl_url = "http://www.easygot.cn/show_headers.php"
 #test_crawl_url = "http://www.easygot.cn/mock_302.php"
 #test_crawl_url = "http://www.easygot.cn/this_page_id_not_exist.php"
 #test_crawl_url = "http://www.easygot.cn/ban_spider.php"
+
+test_crawl_url = "https://corp.1688.com/page/index.htm?spm=a2615.7691481.1998738210.5.UXQudJ&memberId=*xC-i2FISMFIyMFHGOmguOwh*MjbZ8NTT&fromSite=company_site&tracelog=gsda_huangye&smToken=a4f63da4e6044d42ad3b781fbcc3ceca&smSign=m%2B9%2Fejnm8HWOZMYgCT4ARg%3D%3D"
 
 index_limit = 20
 
 class TestSpider(CrawlSpider):
 	name = "mock"
-	start_urls = [test_crawl_url for i in range(1000000)]
-	#start_urls = [test_crawl_url ]
+	#start_urls = [test_crawl_url for i in range(1000000)]
+	start_urls = [test_crawl_url ]
 	allowed_domain = ["easygot.cn"]
 	#start_urls = ["http://www.easygot.cn/show_headers.php","http://www.easygot.cn/show_cookies.php"]
 	
@@ -50,8 +52,8 @@ class TestSpider(CrawlSpider):
 
 		yield item
 
-		if now_index <= index_limit:
-			yield Request(test_crawl_url,callback=self.parse,meta={"index":now_index},dont_filter=True)
+		#if now_index <= index_limit:
+		#	yield Request(test_crawl_url,callback=self.parse,meta={"index":now_index},dont_filter=True)
 		#return {
 		# 	"time":time.ctime(),
 		# 	"url":response.url
