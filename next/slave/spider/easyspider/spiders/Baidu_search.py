@@ -53,7 +53,7 @@ class Baidu_search(CrawlSpider):
 			abstract = "".join(result.xpath("a[@class=\"result_title\"]/div[2]//text()").extract())
 			url = "http://wap.baidu.com/%s"%result.xpath("a/@href").extract()[0]
 
-			print "title %s\n abstract %s\n url %s\n"%(title,abstract,url)
+			#print "title %s\n abstract %s\n url %s\n"%(title,abstract,url)
 			#变原来的 {} 字典，为 Field()
 			#crawl_msg = {}
 			#crawl_msg = Baidu_search_items()
@@ -64,10 +64,9 @@ class Baidu_search(CrawlSpider):
 			crawl_msg["source_page_url"] = url	
 			
 			
-
-
-			yield crawl_msg
-
+			yield Request(url,callback=self.parse_source_page,meta={"item":crawl_msg},dont_filter=True)
+			#break
+			#yield crawl_msg
 		# now_index = response.meta.get("index",0)+10
 		# key_word = response.meta.get("key_word","未知查询关键字")
 		# print query_string.format(word=key_word,index=now_index+10)
@@ -75,3 +74,11 @@ class Baidu_search(CrawlSpider):
 		if now_index <= index_limit:
 			yield Request(query_string.format(word=key_word,index=now_index+10),callback=self.parse,dont_filter=True,meta={"key_word":key_word,"index":now_index})
 		# 	print "next page-------------------------"
+
+	def parse_source_page(self,response):
+		item = response.meta.get("item")
+		if not item:
+			print "with not item............................."
+			return 
+		item["source_page_content"] = response.body
+		yield item

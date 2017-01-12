@@ -71,6 +71,38 @@ create table from_search_engine(
 # MYSQL_PASSWORD = "zhanghang123321"
 # MYSQL_DBNAME = "Network_Information_Monitoring"
 
+
+#----------------------------------
+"""
+下面一段作用就是
+把
+
+a = {"a":"b", "c":"d" , "e":"f" ,"g":"h"}
+
+变成 
+
+insert into table_name(a,b,c,d) values(%s,%s,%s,%s)
+"""
+
+
+#----------------------------------
+
+def join_insert_sql(table_name , insert_map):
+
+	sql = "insert into %s(%s) values(%s)"
+
+	dict_list = insert_map.items()
+
+	keys = tuple( map(lambda x:x[0] , dict_list) )
+	values = tuple( map(lambda x:x[1] , dict_list) )
+
+	sql = sql%(table_name,   (",".join(["%s" for i in xrange(len(insert_map.values()))]) % tuple(insert_map.keys()) )    , ",".join(["%s" for i in xrange(len(values))]))
+
+
+
+	return sql , values
+
+
 class MysqlPipeline(object):
 
 	def __init__(self,MYSQL_HOST,MYSQL_USER,MYSQL_PASSWORD,MYSQL_DBNAME):
@@ -159,40 +191,47 @@ class MysqlPipeline(object):
 		insert_map["source_page_content"] = item.get("source_page_content","null")
 		insert_map["source_page_url"] = item.get("source_page_url","null")
 
-		sql = """
-				insert into from_search_engine(
-					search_key_word,
-					search_highlight_title,
-					search_highlight_content,
-					search_engine,
-					search_page_index,
+		# sql = """
+		# 		insert into from_search_engine(
+		# 			search_key_word,
+		# 			search_highlight_title,
+		# 			search_highlight_content,
+		# 			search_engine,
+		# 			search_page_index,
 
-					source_page_title,
-					source_page_key_word,
-					source_page_description,
-					source_page_content,
-					source_page_url
-			)
-			values(
-					"%(search_key_word)s",
-					"%(search_highlight_title)s",
-					"%(search_highlight_content)s",
-					"%(search_engine)s",
-					"%(search_page_index)s",
-					"%(source_page_title)s",
-					"%(source_page_key_word)s",
-					"%(source_page_description)s",
-					"%(source_page_content)s",
-					"%(source_page_url)s"
-			)
-
-
-		"""
+		# 			source_page_title,
+		# 			source_page_key_word,
+		# 			source_page_description,
+		# 			source_page_content,
+		# 			source_page_url
+		# 	)
+		# 	values(
+		# 			"%(search_key_word)s",
+		# 			"%(search_highlight_title)s",
+		# 			"%(search_highlight_content)s",
+		# 			"%(search_engine)s",
+		# 			"%(search_page_index)s",
+		# 			"%(source_page_title)s",
+		# 			"%(source_page_key_word)s",
+		# 			"%(source_page_description)s",
+		# 			"%(source_page_content)s",
+		# 			"%(source_page_url)s"
+		# 	)
 
 
-		insert_sql = sql%insert_map
+		# """
+
+
+		# insert_sql = sql%insert_map
 		
-		self.db_execute(insert_sql)
+		# self.db_execute(insert_sql)
+
+		#sql = "insert into from_search_engine%s values%s"
+
+
+		sql , values = join_insert_sql("from_search_engine",insert_map)
+		self.new_db_execute(sql,values)
+
 		return item
 
 
@@ -219,16 +258,35 @@ class MysqlPipeline(object):
 		except Exception,e:
 			print "query error and return ",
 			print e
+
+			print "\n\n\n\n\n\n\n"
+			print sql
+			print "\n\n\n\n\n\n"
 			return None
 		self.conn.commit()
 		cursor.close()
 		
 
+	def new_db_execute(self,sql,values):
+		cursor = self.conn.cursor(cursorclass = MySQLdb.cursors.DictCursor)
+		try:
+			cursor.execute(sql,values)
+		except Exception,e:
+			print "query error and return ",
+			print e
+
+			print "\n\n\n\n\n\n\n"
+			print sql , values
+			print "\n\n\n\n\n\n"
+			return None
+		self.conn.commit()
+		cursor.close()
+
 
 if __name__ == '__main__':
-	MysqlPipeline().test()
+	#MysqlPipeline().test()
 
-	MysqlPipeline()._process_item({"search_key_word":"a"},None)
+	#MysqlPipeline()._process_item({"search_key_word":"a"},None)
 
-
+	pass
 

@@ -29,7 +29,22 @@ HTTPCACHE_STORAGE = "scrapy_splash.SplashAwareFSCacheStorage"
 
 
 DOWNLOAD_TIMEOUT = 3600
-DOWNLOAD_DELAY = 5
+
+DOWNLOAD_DELAY = 8
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #为什么只能取到大写的settings，小写的取不到，没有作用？？？
 #看源码，读取解析settings文件，是在settings/__init__.py中，函数 overridden_settings(settings)
@@ -170,9 +185,9 @@ DOWNLOADER_MIDDLEWARES = {
 
     #-------------加载splash--------------------------------
 
-    'scrapy_splash.SplashCookiesMiddleware': 723,
-    'scrapy_splash.SplashMiddleware': 725,
-    'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware': 810,
+    #'scrapy_splash.SplashCookiesMiddleware': 723,
+    #'scrapy_splash.SplashMiddleware': 725,
+    #'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware': 810,
 
     #-------------------------------------------------------
 
